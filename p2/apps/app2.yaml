@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: app2
-  namespace: app2-development
+  namespace: app2
 spec:
   replicas: 1
   selector:
@@ -11,14 +11,11 @@ spec:
   template:
     metadata:
       labels:
-        app: bonita
+        app: app2
     spec:
       containers:
       - name: app2
-        image: ghcr.io/luthernmr/technical-test-bonita:develop
-        envFrom:
-        - secretRef:
-            name: bonita-secrets
+        image: yeasy/simple-web
         ports:
         - containerPort: 8080
 
@@ -42,7 +39,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-wildcard-host
+  name: ingress-app2
 spec:
   rules:
   - host: "app2.com"
