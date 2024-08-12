@@ -1,40 +1,26 @@
-
-$DISABLE_FIREWALL_SCRIPT = <<-SHELL
-  sudo systemctl disable --now firewalld
-SHELL
-
-
-#BOX_URL = "https://app.vagrantup.com/centos/boxes/8/versions/2011.0/providers/virtualbox/unknown/vagrant.box"
-BOX_URL = "https://app.vagrantup.com/centos/boxes/7/versions/2004.01/providers/virtualbox/unknown/vagrant.box"
-
 Vagrant.configure("2") do |config|
-    # Configuration du nœud maître
+    # Master node configuration
+    config.vm.box = "ubuntu/jammy64"
     config.vm.define "lnemorS" do |master|
-    config.vm.box = "centos/7"
-    config.vm.box_url = BOX_URL
-    config.vm.provision "shell", inline: $DISABLE_FIREWALL_SCRIPT 
       master.vm.hostname = "lnemorS" 
       master.vm.network "private_network", ip: "192.168.56.110"
-      master.vm.synced_folder ".", "/vagrant", type: "virtualbox"
       master.vm.provision "shell", path: "scripts/script.sh", privileged: true
       master.vm.provider "virtualbox" do |vb|
         vb.name = "lnemorS"
         vb.memory = "1024"
-        vb.cpus = 2
+        vb.cpus = 1
       end
     end
-    # Configuration du nœud worker
+    # Worker node configuration
+    config.vm.box = "ubuntu/jammy64"
     config.vm.define "lnemorSW" do |worker|
-    config.vm.box = "centos/7"
-    config.vm.box_url = BOX_URL
       worker.vm.hostname = "lnemorSW" 
       worker.vm.network "private_network", ip: "192.168.56.111"
-      worker.vm.synced_folder ".", "/vagrant", type: "virtualbox"
       worker.vm.provision "shell", path: "scripts/script2.sh", privileged: true
       worker.vm.provider "virtualbox" do |vb|
         vb.name = "lnemorSW"
         vb.memory = "1024"
-        vb.cpus = 2
+        vb.cpus = 1
       end
       # Provisionnement pour installer K3s en tant que nœud worker
     end
