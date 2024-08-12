@@ -4,7 +4,7 @@ Vagrant.configure("2") do |config|
     config.vm.define "lnemorS" do |master|
       master.vm.hostname = "lnemorS" 
       master.vm.network "private_network", ip: "192.168.56.110"
-      master.vm.provision "shell", path: "scripts/script.sh", privileged: true
+      master.vm.provision "shell", path: "scripts/provision_master.sh", privileged: true
       master.vm.provider "virtualbox" do |vb|
         vb.name = "lnemorS"
         vb.memory = "1024"
@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
     config.vm.define "lnemorSW" do |worker|
       worker.vm.hostname = "lnemorSW" 
       worker.vm.network "private_network", ip: "192.168.56.111"
-      worker.vm.provision "shell", path: "scripts/script2.sh", privileged: true
+      worker.vm.provision "shell", path: "scripts/provision_worker.sh", privileged: true
       worker.vm.provider "virtualbox" do |vb|
         vb.name = "lnemorSW"
         vb.memory = "1024"
