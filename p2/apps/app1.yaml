@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app1
+  name: app1-deployment
   namespace: app1
 spec:
   replicas: 1
@@ -14,8 +14,8 @@ spec:
         app: app1
     spec:
       containers:
-      - name: app1
-        image: yeasy/simple-web
+      - name: app1-container
+        image: yeasy/simple-webs
         ports:
         - containerPort: 8080
 
@@ -24,13 +24,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: app1
+  name: app1-service
+  namespace : app1
 spec:
   selector:
     app: app1
   ports:
     - protocol: TCP
-      port: 8080
+      port: 80
       targetPort: 8080
 
 ---     
@@ -38,7 +39,8 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-app1
+  name: app1-ingress
+  namespace : app1
 spec:
   rules:
   - host: "app1.com"
@@ -48,6 +50,6 @@ spec:
         path: "/"
         backend:
           service:
-            name: app1
+            name: app1-service
             port:
               number: 80
