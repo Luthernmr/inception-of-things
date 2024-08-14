@@ -39,7 +39,7 @@ fi
 # Create K3d cluster if not already created
 if ! k3d cluster list | grep -q "my-cluster"; then
     echo "Creating K3d cluster named 'my-cluster'..."
-    k3d cluster create my-cluster
+    k3d cluster create my-cluster -p 8080:443 -p 8888:8888
 else
     echo "K3d cluster my-cluster already exists. Skipping..."
 fi
@@ -57,8 +57,7 @@ kubectl create namespace argocd
 kubectl create namespace dev
 
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-kubectl port-forward -n argocd svc/argocd-server 8080:443
-
+kubectl apply -n dev ../confs/dev/application-will-app.yaml
 #TODO 
 
 
