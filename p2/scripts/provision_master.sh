@@ -2,8 +2,4 @@ curl -sfL https://get.k3s.io |  INSTALL_K3S_EXEC="--write-kubeconfig-mode=644 --
 
 echo "alias k='kubectl'" >> /etc/profile.d/00-aliases.sh
 
-kubectl create namespace app1
-kubectl create namespace app2
-kubectl create namespace app3
-
-kubectl apply -f /vagrant/apps
+kubectl apply -f /vagrant/confs
