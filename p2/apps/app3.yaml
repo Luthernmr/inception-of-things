@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app3
-  namespace: app3-development
+  name: app3-deployment
+  namespace: app3
 spec:
   replicas: 1
   selector:
@@ -11,38 +11,36 @@ spec:
   template:
     metadata:
       labels:
-        app: bonita
+        app: app3
     spec:
       containers:
-      - name: app3
-        image: ghcr.io/luthernmr/technical-test-bonita:develop
-        envFrom:
-        - secretRef:
-            name: bonita-secrets
+      - name: app3-container
+        image: yeasy/simple-web
         ports:
-        - containerPort: 8080
+        - containerPort: 80
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: app3
-  namespace: 
+  name: app3-service
+  namespace: app3
 spec:
   selector:
     app: app3
   ports:
     - protocol: TCP
-      port: 8080
-      targetPort: 8080
+      port: 80
+      targetPort: 80
 
 ---     
 
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-wildcard-host
+  name: app3-ingress
+  namespace: app3
 spec:
   rules:
   - host: "app3.com"
@@ -52,6 +50,6 @@ spec:
         path: "/"
         backend:
           service:
-            name: app3
+            name: app3-service
             port:
               number: 80
