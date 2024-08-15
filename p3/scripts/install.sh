@@ -58,8 +58,9 @@ kubectl create namespace dev
 
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
-kubectl apply -n dev -f ../confs/application-will-app.yaml
+kubectl apply -n argocd -f ../confs/application-will-app.yaml
 
+sleep 60s
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 # Keep the shell open (optional)
 exec "$SHELL"
