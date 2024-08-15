@@ -39,7 +39,11 @@ fi
 # Create K3d cluster if not already created
 if ! k3d cluster list | grep -q "my-cluster"; then
     echo "Creating K3d cluster named 'my-cluster'..."
-    k3d cluster create my-cluster -p 8084:443@loadbalancer -p 8888:8888@loadbalancer
+    k3d cluster create my-cluster \
+    -p 8443:8443@loadbalancer \
+    -p 8181:8181@loadbalancer \
+    -p 8888:8888@loadbalancer \
+    -p 8989:8989@loadbalancer 
 else
     echo "K3d cluster my-cluster already exists. Skipping..."
 fi
@@ -56,11 +60,17 @@ echo "Kubeconfig saved to ~/.kube/config"
 kubectl create namespace argocd
 kubectl create namespace dev
 
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+
+kubectl apply -n argocd -f ../confs/install.yaml
 kubectl apply -n argocd -f ../confs/application-will-app.yaml
 
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}' #change Service type to Loadbalcer
 sleep 60s
+
+echo "argocd password: "
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+echo -e "\n" 
+
+
 # Keep the shell open (optional)
 exec "$SHELL"

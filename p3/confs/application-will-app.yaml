@@ -1,17 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  name: will-application
   labels:
-    app: argocdrocks
-  name: argocdrocks-app
+    app: will
 spec:
-  project: argocdrocks-project
+  project: default
   source:
-    repoURL: https://github.com/sokube/argocd-rocks.git
-    targetRevision: featurebranch_1
+    repoURL: https://github.com/Luthernmr/lnemor-wil-iot.git
+    targetRevision: HEAD
     path: app
-    directory:
-      recurse: true
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
