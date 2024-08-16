@@ -7,15 +7,13 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: http://localhost:8181/root/lnemor-will-iot.git #gitlab repo url
+    repoURL: http://gitlab-webservice-default.gitlab.svc.cluster.local:8181/root/lnemor-will-iot.git #gitlab repo url from interne 
     targetRevision: HEAD
     path: app
-    directory:
-      recurse: true
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
   syncPolicy:
     automated:
-      prune: false
+      prune: true
       selfHeal: true

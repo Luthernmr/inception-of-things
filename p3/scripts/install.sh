@@ -43,7 +43,7 @@ if ! k3d cluster list | grep -q "my-cluster"; then
     -p 8443:8443@loadbalancer \
     -p 8181:8181@loadbalancer \
     -p 8888:8888@loadbalancer \
-    -p 8989:8989@loadbalancer 
+    -p 8989:8989@loadbalancer
 else
     echo "K3d cluster my-cluster already exists. Skipping..."
 fi
