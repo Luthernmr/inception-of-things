@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: will-application-gitlab
+  labels:
+    app: will-gitlab
+spec:
+  project: default
+  source:
+    repoURL: http://gitlab-webservice-default.gitlab.svc.cluster.local:8181/root/lnemor-will-iot.git #gitlab repo url from interne 
+    targetRevision: HEAD
+    path: app
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
