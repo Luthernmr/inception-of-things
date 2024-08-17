@@ -67,10 +67,11 @@ kubectl apply -n argocd -f ../confs/application-will-app.yaml
 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}' #change Service type to Loadbalcer
 sleep 60s
 
+echo -e "argocd host: localhost:8443\n"
+echo -e "argocd user: admin\n"
 echo "argocd password: "
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 echo -e "\n" 
+echo -e"will app: localhost:8888\n"
 
 
-# Keep the shell open (optional)
-exec "$SHELL"
